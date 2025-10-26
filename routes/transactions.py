@@ -8,6 +8,7 @@ from tortoise.expressions import Q
 from tortoise import Tortoise
 from models.transaction_history import TransactionHistory
 
+
 router = APIRouter(tags=["Transactions"])
 
 # ---------- Schemas ----------
@@ -25,6 +26,7 @@ class TransactionOut(BaseModel):
     reference_number: Optional[str] = None
     location_of_transaction: Optional[str] = None
     address: Optional[str] = None
+    transaction_category: Optional[str] = None
 
 class TransactionListOut(BaseModel):
     total: int
@@ -46,6 +48,7 @@ async def list_transactions(
     merchant: Optional[str] = Query(None, description="Case-insensitive contains"),
     txn_type: Optional[str] = Query(None, description="Transaction type contains (ILIKE)"),
     reference_search: Optional[str] = Query(None, description="Search in reference number (ILIKE)"),
+    txn_category: Optional[str] = Query(None, description="Transaction category contains (ILIKE)"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
 ):
@@ -62,6 +65,8 @@ async def list_transactions(
         q &= Q(transaction_type__icontains=txn_type)
     if reference_search:
         q &= Q(reference_number__icontains=reference_search)
+    if txn_category:  # ✅ add this
+        q &= Q(transaction_category__icontains=txn_category)
 
     total = await TransactionHistory.filter(q).count()
     rows = (

@@ -19,3 +19,5 @@ class TransactionHistory(models.Model):
     reference_number = fields.TextField(null=True, source_field="Reference Number")
     location_of_transaction = fields.TextField(null=True, source_field="Location of transaction")
     address = fields.TextField(null=True, source_field="Address")
+
+    transaction_category = fields.CharField(max_length=255, null=True, source_field='Transaction category')
