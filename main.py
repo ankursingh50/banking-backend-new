@@ -59,6 +59,10 @@ app.include_router(transaction_summary.router, prefix="/api")
 app.include_router(transactions.router, prefix="/api")
 app.include_router(international_transactions.router, prefix="/api")
 
+@app.get("/")
+async def root():
+    return {"status": "ok", "service": "banking-backend-new"}
+
 #@app.post("/validate-iqama")
 #async def validate_iqama(data: dict):
 #    iqama_id = data.get("iqama_id")

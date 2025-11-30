@@ -541,7 +541,26 @@ async def delete_customer(iqama_id: str):
     await record.delete()
     return {"message": "Customer and associated device binding removed"}
 
+# ⬇️ GET /customers/{iqama_id}/credentials  (safe: no plaintext)
+@router.get("/{iqama_id}/credentials")
+async def get_customer_credentials(iqama_id: str):
+    """
+    Returns non-sensitive credential info. Does NOT return plaintext password.
+    """
+    record = await OnboardedCustomer.get_or_none(iqama_id=iqama_id)
+    if not record:
+        raise HTTPException(status_code=404, detail="Customer record not found")
 
+    # Indicate whether a password exists and when it was set
+    return {
+        "iqama_id": record.iqama_id,
+        "password_set": bool(record.password),
+        "password_is_hashed": bool(record.password and record.password.startswith("$")),  # crude hint for bcrypt/argon2
+        "password_set_date": record.password_set_date,
+        "password_set_time": record.password_set_time,
+        "mpin_set_date": record.mpin_set_date,
+        "mpin_set_time": record.mpin_set_time,
+    }
 
 
 
