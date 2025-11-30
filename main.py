@@ -30,7 +30,8 @@ origins = [
     "http://localhost",
     "http://localhost:3000",  # Your React admin portal
     "http://localhost:5173",  # ✅ ADD THIS LINE for your new Vite admin portal
-    "https://admin-frontend-llsr.onrender.com",  # ✅ ADD THIS LINE for your deployed admin portal
+    #"https://admin-frontend-llsr.onrender.com",  # ✅ ADD THIS LINE for your deployed admin portal
+    "https://banking-admin-new.onrender.com", 
     # Add any other origins you might deploy to
 ]
 
